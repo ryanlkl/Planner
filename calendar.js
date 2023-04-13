@@ -2,6 +2,8 @@
 var today = new Date();
 var currentMonth = today.getMonth();
 var currentYear = today.getFullYear();
+var changeMonth = today.getMonth();
+var changeYear = today.getFullYear();
 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 var events = {};
@@ -10,11 +12,13 @@ function generateCalendar(month, year) {
 	var calendar = document.getElementById('calendar');
 	var html = '<table>';
 	html += '<tr><th colspan="7"><button id="back" class="calendarButton"><</button>' + months[month] + ' ' + year + '<button id="forward" class="calendarButton">></button></th></tr>';
+	html += '<button id="today" class="input">Today</button>'
 	html += '<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>';
 	var date = new Date(year, month, 1);
 	var firstDay = date.getDay();
 	var lastDay = new Date(year, month + 1, 0).getDate();
 	var day = 1;
+	let days = ['one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty','twentyone','twentytwo','twentythree','twentyfour','twentyfive','twentysix','twentyseven','twentyeight','twentynine','thirty','thirtyone']
 	for (var i = 0; i < 6; i++) {
 		html += '<tr>';
 		for (var j = 0; j < 7; j++) {
@@ -31,8 +35,8 @@ function generateCalendar(month, year) {
 				if (events[dateString]) {
 					html += ' class="event"';
 				}
-				html += '>';
-                html += day + '</td>';
+				html += '><button class="dates" id="' + days[day - 1] + '">';
+                html += day + '</button></td>';
 				day++;
 			}
 		}
@@ -42,27 +46,49 @@ function generateCalendar(month, year) {
 	calendar.innerHTML = html;
 
 	document.getElementById('back').onclick = function() {
-		if (currentMonth === 0) {
-			currentMonth = 11
-			currentYear -= 1;
-			generateCalendar(currentMonth, currentYear);
+		if (changeMonth === 0) {
+			changeMonth = 11
+			changeYear -= 1;
+			generateCalendar(changeMonth, changeYear);
 		} else {
-			currentMonth -= 1;
-			generateCalendar(currentMonth, currentYear);
+			changeMonth -= 1;
+			generateCalendar(changeMonth, changeYear);
 		}
 	}
 
 	document.getElementById('forward').onclick = function() {
-		if (currentMonth === 11) {
-			currentMonth = 0;
-			currentYear += 1;
-			generateCalendar(currentMonth, currentYear);
+		if (changeMonth === 11) {
+			changeMonth = 0;
+			changeYear += 1;
+			generateCalendar(changeMonth, changeYear);
 		} else {
-			currentMonth += 1;
-			generateCalendar(currentMonth, currentYear);
+			changeMonth += 1;
+			generateCalendar(changeMonth, changeYear);
 		}
 	}
 
+	document.getElementById('today').onclick = function() {
+		changeMonth = currentMonth;
+		changeYear = currentYear;
+		generateCalendar(currentMonth, currentYear);
+	}
+
+	let dateButtons = document.getElementsByClassName('dates');
+	for (let i = 0; i < dateButtons.length; i++) {
+		document.getElementById(`${days[i]}`).onclick = function() {
+			let div = document.createElement('div');
+			div.setAttribute('id','eventForm');
+			div.innerHTML = `<button>X</button><h2>Add Event</h2>
+			<form><label for="eventTitle">Title:</label>
+			<input type="text" id="eventTitle" required>
+			<label for="eventDate">Date:</label>
+			<input type="date" id="eventDate" required>
+			<button type="submit">Add</button></form>`;
+			let lhs = document.querySelector('#lhs');
+			lhs.appendChild(div);
+			console.log('hi');
+		}
+	}
 }
 
 generateCalendar(currentMonth, currentYear);

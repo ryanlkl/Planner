@@ -11,6 +11,14 @@
     <h1>Planner</h1>
 
     <div id="lhs">
+        <div id="eventForm" class="hidden">
+            <button id="close" class="input">X</button><h2>Add Event</h2>
+			<form><label for="eventTitle">Title:</label>
+			<input type="text" id="eventTitle" class="input" required>
+			<label for="eventDate">Date:</label>
+			<input type="date" id="eventDate" class="input" required>
+			<button type="submit" class="input">Add</button></form>
+        </div>
         <div id="calendar"></div>
 
         <script src="calendar.js"></script>

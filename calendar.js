@@ -76,17 +76,11 @@ function generateCalendar(month, year) {
 	let dateButtons = document.getElementsByClassName('dates');
 	for (let i = 0; i < dateButtons.length; i++) {
 		document.getElementById(`${days[i]}`).onclick = function() {
-			let div = document.createElement('div');
-			div.setAttribute('id','eventForm');
-			div.innerHTML = `<button>X</button><h2>Add Event</h2>
-			<form><label for="eventTitle">Title:</label>
-			<input type="text" id="eventTitle" required>
-			<label for="eventDate">Date:</label>
-			<input type="date" id="eventDate" required>
-			<button type="submit">Add</button></form>`;
-			let lhs = document.querySelector('#lhs');
-			lhs.appendChild(div);
-			console.log('hi');
+			document.getElementById('eventForm').classList.remove('hidden');
+		}
+
+		document.getElementById('close').onclick = function() {
+			document.getElementById('eventForm').classList.add('hidden');
 		}
 	}
 }
